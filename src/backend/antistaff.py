@@ -1,8 +1,26 @@
 from pydantic import BaseModel, Field
 
+class DemoSymbol(BaseModel):
+    pass
+
+class DemoNote(DemoSymbol):
+    letter: str # A to G
+    octave: int # 0 to 8
+    # pitch_mod: str = "" # blank, n, s, f
+
+class DemoNoteSizeChange(DemoSymbol):
+    lh_size: int
+    rh_size: int
+
+class DemoAntistaffSheet(BaseModel):
+    page_size: tuple[int,int]
+    contents: list[DemoSymbol]
+
+
 
 class Symbol(BaseModel):
-    value: str = Field(alias="v")
+    pass
+    # value: str = Field(alias="v")
 
 class Note(BaseModel):
     # Total note range: A0 to C8
@@ -13,11 +31,14 @@ class Note(BaseModel):
 
 class Measure(BaseModel):
     time_sig: dict[str, int] = {"count": 4, "size": 4}
-    key: list[Note] # Should always have 7 notes
-    extra_symbols: list[Symbol]
-    # Should be formatted: rh symbols, rh notes, note sizes, lh notes, lh symbols, lower symbols
-    columns: list[Note | Symbol]
-    height: int = 3
+    # Should always have 7 notes, can't use Note class b/c it has a different visual format
+    key: list[Symbol]
+    pre_note_symbols: list[Symbol]
+    rh_columns: list[Note | Symbol]
+    rh_height: int = 1
+    size_changes: list[Symbol]
+    lh_columns: list[Note | Symbol]
+    lh_height: int = 1
     width: int
 
 class AntistaffSheet(BaseModel):
