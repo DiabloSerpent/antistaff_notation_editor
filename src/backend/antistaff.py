@@ -1,20 +1,29 @@
 from pydantic import BaseModel, Field
 
-class DemoSymbol(BaseModel):
-    pass
+# 34 squares wide x 44 squares long
+# The graph paper I have uses 4 squares per inch and is 8.5'' x 11''
+defaultWidth  = 34
+defaultHeight = 44
 
-class DemoNote(DemoSymbol):
+type DemoSymbol = DemoBlank | DemoNote | DemoNoteSizeChange
+
+class DemoBlank(BaseModel):
+    cls: str = ""
+
+class DemoNote(BaseModel):
+    cls: str = "n"
     letter: str # A to G
-    octave: int # 0 to 8
+    octave: str # 0 to 8
     # pitch_mod: str = "" # blank, n, s, f
 
-class DemoNoteSizeChange(DemoSymbol):
-    lh_size: int
-    rh_size: int
+class DemoNoteSizeChange(BaseModel):
+    cls: str = "c"
+    lh: str
+    rh: str
 
 class DemoAntistaffSheet(BaseModel):
-    page_size: tuple[int,int]
-    contents: list[DemoSymbol]
+    page_size: tuple[int,int]  = (defaultWidth, defaultHeight)
+    contents: list[DemoSymbol] = [DemoBlank() for _ in range(0, defaultWidth * defaultHeight)]
 
 
 

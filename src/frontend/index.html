@@ -1,17 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Antistaff Notation Editor</title>
 </head>
+
 <body>
     <button id="antistaff-editor" type="button">Antistaff Editor</button>
     <button id="antistaff-example" type="button">Antistaff IRL Example</button>
     <button id="sheet-example" type="button">Original Sheet IRL</button>
-    <div id="container"></div>
+    <div>
+        <span id="container"></span>
+        <div style="float: right;">
+            <button id="clear-cell">Delete</button>
+            <label>
+                Symbol type:
+                <select id="symbol-type">
+                    <option value="">Select ...</option>
+                    <option value="n">Note</option>
+                    <option value="c">Size Change</option>
+                </select>
+            </label>
+            <div id="edit-options"></div>
+        </div>
+    </div>
+    <!-- <div id="edit-options" class="modal" style="display: none">
+        <span id="close-edit-options">x</span><button id="delete-cell-contents">Delete</button>
+    </div> -->
     <script src="main.js"></script>
-    <!-- <img src="examples/witch_in_gold_antistaff.jpg" width="700" heigth="1000" alt="irl example"> -->
 </body>
+
 </html>
