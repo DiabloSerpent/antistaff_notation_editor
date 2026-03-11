@@ -98,9 +98,15 @@
 
     function drawNote(ctx, sx, sy, c) {
         ctx.save();
-        ctx.translate(sx, sy);
+        ctx.translate(sx+squareSize/2, sy+squareSize/2);
         ctx.rotate(45 * Math.PI / 180);
-        ctx.fillText(`${c.letter} ${c.octave}`, 3, 4);
+        let fs = Math.floor(0.7 * squareSize);
+        ctx.font = `${fs}px sans-serif`;
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "end";
+        ctx.fillText(`${c.letter}`, -1, 0);
+        ctx.textAlign = "start";
+        ctx.fillText(`${c.octave}`, 1, 0);
         ctx.restore();
 
         ctx.beginPath();
@@ -109,11 +115,18 @@
         ctx.closePath();
         ctx.stroke();
     }
+
     function drawNoteSizeChange(ctx, sx, sy, c) {
         ctx.save();
-        ctx.translate(sx, sy+squareSize);
+        ctx.translate(sx+squareSize/2, sy+squareSize/2);
         ctx.rotate(-45 * Math.PI / 180);
-        ctx.fillText(`${c.rh} ${c.lh}`, 3, 3);
+        let fs = Math.floor(0.7 * squareSize);
+        ctx.font = `${fs}px sans-serif`;
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "end";
+        ctx.fillText(`${c.lh}`, -1, 0);
+        ctx.textAlign = "start";
+        ctx.fillText(`${c.rh}`, 1, 0);
         ctx.restore();
 
         ctx.beginPath();
