@@ -7,15 +7,19 @@ from pydantic import BaseModel
 
 from src.backend.antistaff import DemoAntistaffSheet, DemoNote, DemoNoteSizeChange, DemoSymbol, DemoBlank
 
+# 34 squares wide x 44 squares long
+# The graph paper I have uses 4 squares per inch and is 8.5'' x 11''
+defaultWidth  = 34
+defaultHeight = 44
 
-sheets: list[DemoAntistaffSheet] = [DemoAntistaffSheet()]
+sheets: list[DemoAntistaffSheet] = [DemoAntistaffSheet(defaultWidth, defaultHeight)]
 
 for i in range(0,8):
     l = "ABCDEFGA"
     o = "012345678"
-    sheets[0].contents[37+i] = DemoNote(letter=l[i], octave=o[i])
-    sheets[0].contents[34+37+i] = DemoNoteSizeChange(rh=o[i], lh=o[-i])
-    sheets[0].contents[34*2+37+i] = DemoNote(letter=l[i], octave=o[i])
+    sheets[0].contents[37+i] = DemoNote(l[i]+o[i])
+    sheets[0].contents[34+37+i] = DemoNoteSizeChange(o[-i]+"\\"+o[i])
+    sheets[0].contents[34*2+37+i] = DemoNote(l[i]+o[i])
 
 app = FastAPI(title="Antistaff Notation Editor", version="1.0.0")
 
