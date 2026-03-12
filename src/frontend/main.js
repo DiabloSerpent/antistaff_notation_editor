@@ -9,7 +9,7 @@
     let selectedCell = null;
     let CTX = null;
     
-    const pageWidth = 500;
+    const pageWidth = 485;
     
     const pageAspectRatio = pageSquares[1] / pageSquares[0];
     const pageHeight      = pageWidth * pageAspectRatio;
