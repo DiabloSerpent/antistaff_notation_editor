@@ -28,6 +28,9 @@ app = FastAPI(title="Antistaff Notation Editor", version="1.0.0")
 async def home() -> FileResponse:
     return FileResponse("./src/frontend/index.html")
 
+@app.get("/favicon.ico")
+async def getIcon() -> FileResponse:
+    return FileResponse("AntistaffEditorIcon.ico")
 
 examples_router = APIRouter(prefix="/examples", tags=["Examples"])
 
