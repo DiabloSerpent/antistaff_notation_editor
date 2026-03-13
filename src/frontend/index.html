@@ -9,12 +9,14 @@
 </head>
 
 <body>
-    <button id="antistaff-editor" type="button">Antistaff Editor</button>
-    <button id="antistaff-example" type="button">Antistaff IRL Example</button>
-    <button id="sheet-example" type="button">Original Sheet IRL</button>
-    <div>
+    <div class="button-row">
+        <button id="antistaff-editor" type="button">Antistaff Editor</button>
+        <button id="antistaff-example" type="button">Antistaff IRL Example</button>
+        <button id="sheet-example" type="button">Original Sheet IRL</button>
+    </div>
+    <div class="editor-row">
         <span id="container"></span>
-        <div style="float: right;">
+        <span id="symbol-edit">
             <button id="clear-cell">Delete</button>
             <label>
                 Symbol type:
@@ -24,8 +26,12 @@
                 </select>
             </label>
             <div id="edit-options"></div>
-        </div>
-        <div id="sheet-tab-buttons"><button>Sheet 1</button><input type="number"><button>Add Sheet</button></div>
+        </divspan>
+    </div>
+    <div id="sheet-tab-buttons" class="button-row">
+        <button>Sheet 1</button>
+        <input type="number">
+        <button>Add Sheet</button>
     </div>
     <!-- <div id="edit-options" class="modal" style="display: none">
         <span id="close-edit-options">x</span><button id="delete-cell-contents">Delete</button>

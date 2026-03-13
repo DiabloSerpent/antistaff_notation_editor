@@ -1,22 +1,37 @@
 (async () => {
     const baseApiUrl = "http://127.0.0.1:8000";
 
-    let mainSheet   = await getSheet(0);
-    let pageSquares = mainSheet.page_size;
-    let mainCells   = mainSheet.contents;
-
     let asDiv = document.getElementById("container");
+
+    let currentSheet = null;
+    let mainSheet    = null;
+    let pageSquares  = null;
+    let mainCells    = null;
+    
     let selectedCell = null;
     let CTX = null;
-    
-    const pageWidth = 485;
-    
-    const pageAspectRatio = pageSquares[1] / pageSquares[0];
-    const pageHeight      = pageWidth * pageAspectRatio;
-    const squareSize      = pageWidth / pageSquares[0];
+
+    let pageWidth  = null;
+    let pageHeight = null;
+    let squareSize = null;
+
+    setSheet(0);
+    displayNoteSelector();
+
+    async function setSheet(id) {
+        if (id === currentSheet) {
+            return;
+        }
+        mainSheet = await getSheet(id);
+
+        pageSquares = mainSheet.page_size;
+        mainCells   = mainSheet.contents;
+
+        displayAntistaffCanvas();
+    }
 
     async function getSheet(id) {
-        const r = await fetch(`${baseApiUrl}/sheets/${id}`);
+        const r   = await fetch(`${baseApiUrl}/sheets/${id}`);
         return r.json();
     }
     async function putCell(sheet_id, cell_id, new_contents) {
@@ -35,12 +50,15 @@
     }
 
     function displayAntistaffCanvas() {
+        pageHeight = asDiv.offsetHeight;
+        pageWidth  = Math.floor(pageHeight * pageSquares[0] / pageSquares[1]);
+        squareSize = pageWidth / pageSquares[0];
+
         asDiv.innerHTML = `
             <canvas id="as-grid" width="${pageWidth}" height="${pageHeight}"></canvas>
         `;
 
         let asCanvas = document.getElementById("as-grid");
-        // console.dir(asCanvas);
         let ctx = asCanvas.getContext("2d");
         CTX = ctx;
 
@@ -48,7 +66,6 @@
         drawAntistaffCanvas(ctx);
     }
     document.getElementById("antistaff-editor").addEventListener("click", displayAntistaffCanvas);
-    displayAntistaffCanvas();
 
     function onCanvasClick(e) {
         if (CTX === null) {
@@ -237,7 +254,6 @@
             let l = document.getElementById("note-letter").value;
             let o = document.getElementById("note-octave").value;
             let nc = {"cls": "n", "letter": l, "octave": o};
-            // console.log(nc);
             mainCells[selectedCell] = nc;
             putCell(0, selectedCell, nc);
             
@@ -245,7 +261,6 @@
             drawAntistaffCanvas(CTX);
         });
     }
-    displayNoteSelector();
 
     function displaySizeSelector() {
         let optDiv = document.getElementById("edit-options");

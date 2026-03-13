@@ -1,0 +1,29 @@
+html, body {
+    margin: 0;
+    height: 99%;
+}
+
+body {
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.editor-row {
+    flex-grow: 10;
+    /* align-self: stretch; */
+
+    display: flex;
+    flex-direction: row; /* Doesn't affect appearance at the moment, its just here for clarity */
+    /* justify-content: flex-start; */
+}
+
+.button-row {
+    margin: 0;
+    padding-bottom: 5px;
+}
+
+#symbol-edit {
+    padding-left: 10px;
+}

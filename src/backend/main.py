@@ -13,6 +13,8 @@ defaultWidth  = 34
 defaultHeight = 44
 
 sheets: list[DemoAntistaffSheet] = [DemoAntistaffSheet(defaultWidth, defaultHeight)]
+sheets.append(DemoAntistaffSheet(defaultHeight, defaultWidth))
+sheets.append(DemoAntistaffSheet(10, 10))
 
 for i in range(0,8):
     l = "ABCDEFGA"
