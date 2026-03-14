@@ -1,9 +1,8 @@
 from typing import Any
 
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter, FastAPI, Response, status
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
 
 from src.backend.antistaff import DemoAntistaffSheet, DemoNote, DemoNoteSizeChange, DemoSymbol, DemoBlank
 
@@ -43,11 +42,24 @@ async def getExampleImage(file_name: str) -> FileResponse:
     return FileResponse(f"./examples/{file_name}")
 
 
-sheets_router = APIRouter(prefix="/sheets", tags=["Examples"])
+sheets_router = APIRouter(prefix="/sheets", tags=["Sheet"])
 
+@sheets_router.get("/amount")
+async def getSheetAmount() -> int:
+    return len(sheets)
+
+@sheets_router.post("/", status_code=200)
+async def newSheet(width: int, height: int, response: Response) -> None:
+    response.status_code = status.HTTP_201_CREATED
+    sheets.append(DemoAntistaffSheet(width, height))
+
+@sheets_router.delete("/{sheet_id}/{cell_id}")
+async def deleteSheet(sheet_id: int) -> None:
+    sheets[sheet_id].contents[cell_id] = DemoBlank()
+    return None
 
 @sheets_router.put("/{sheet_id}/{cell_id}")
-async def getSheetCell(sheet_id: int, cell_id: int, new_cell_raw: dict) -> None:
+async def setSheetCell(sheet_id: int, cell_id: int, new_cell_raw: dict) -> None:
     new_cell: DemoSymbol
 
     match (new_cell_raw["cls"]):

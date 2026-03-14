@@ -11,12 +11,10 @@ body {
 }
 
 .editor-row {
-    flex-grow: 5;
-    /* align-self: stretch; */
+    flex-grow: 1;
 
     display: flex;
     flex-direction: row; /* Doesn't affect appearance at the moment, its just here for clarity */
-    /* justify-content: flex-start; */
 }
 
 .button-row {
@@ -26,4 +24,30 @@ body {
 
 #symbol-edit {
     padding-left: 10px;
+}
+
+#sheet-tab-buttons {
+    display: flex;
+    padding-right: 5px;
+}
+
+.tab-button {
+    order: -1;
+}
+
+.size-input {
+    width: 5%;
+    /* margin-left: 1px; */
+}
+
+#add-sheet {
+    /* margin-left: 1px; */
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+#delete-sheet {
+    align-self: flex-end;
 }

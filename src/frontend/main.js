@@ -6,24 +6,36 @@
     let asDiv = document.getElementById("container");
 
     let currentSheet = null;
+    let totalSheets  = null;
     let mainSheet    = null;
     let pageSquares  = null;
     let mainCells    = null;
     
     let selectedCell = null;
-    let CTX = null;
+    let CTX          = null;
 
     let pageWidth  = null;
     let pageHeight = null;
     let squareSize = null;
 
     setSheet(0);
+    getTotalSheets();
     displayNoteSelector();
 
+    async function getTotalSheets() {
+        let r = await fetch(`${baseApiUrl}/sheets/amount`);
+        totalSheets = await r.json();
+        
+        for (let i = 0; i < totalSheets; i++) {
+            displayNewSheetTab(i);
+        }
+    }
     async function setSheet(id) {
         if (id === currentSheet) {
             return;
         }
+
+        currentSheet = id;
         mainSheet = await getSheet(id);
 
         pageSquares = mainSheet.page_size;
@@ -33,7 +45,7 @@
     }
 
     async function getSheet(id) {
-        const r   = await fetch(`${baseApiUrl}/sheets/${id}`);
+        const r = await fetch(`${baseApiUrl}/sheets/${id}`);
         return r.json();
     }
     async function putCell(sheet_id, cell_id, new_contents) {
@@ -317,5 +329,48 @@
 
         selectedCell = null;
         drawAntistaffCanvas(CTX);
+    });
+
+    function displayNewSheetTab(id) {
+        let tabBar = document.getElementById("sheet-tab-buttons");
+
+        let btn = document.createElement("button");
+        btn.id = `page-${id}`;
+        btn.classList.add("tab-button");
+        btn.innerText = `Page ${id+1}`;
+        btn.addEventListener("click", onSheetTabButtonClick);
+
+        tabBar.append(btn);
+    }
+
+    function onSheetTabButtonClick(e) {
+        // Could maybe make it so that events that have a higher click tally than 1 aren't considered.
+        // Not necessary tho.
+        setSheet(parseInt(e.srcElement.id.substring(5)));
+    }
+
+    document.getElementById("add-sheet").addEventListener("click", e => {
+        let new_width_el  = document.getElementById("new-sheet-width");
+        let new_height_el = document.getElementById("new-sheet-height");
+
+        let new_width  = parseInt(new_width_el.value);
+        let new_height = parseInt(new_height_el.value);
+
+        fetch(`${baseApiUrl}/sheets/?width=${new_width}&height=${new_height}`, {
+            method: "POST",
+        });
+
+        new_width_el.value  = "";
+        new_height_el.value = "";
+
+        displayNewSheetTab(totalSheets);
+        setSheet(totalSheets);
+        totalSheets += 1;
+    });
+
+    document.getElementById("delete-sheet").addEventListener("click", e => {
+        // fetch(`${baseApiUrl}/sheets/${currentSheet}`, {
+        //     method: "DELETE",
+        // });
     });
 })();
