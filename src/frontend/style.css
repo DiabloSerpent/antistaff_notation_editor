@@ -1,17 +1,17 @@
 html, body {
     margin: 0;
-    height: 99%;
+    height: 100%;
 }
 
 body {
-    padding: 5px;
+    padding-left: 5px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
 
 .editor-row {
-    flex-grow: 10;
+    flex-grow: 5;
     /* align-self: stretch; */
 
     display: flex;
@@ -20,8 +20,8 @@ body {
 }
 
 .button-row {
-    margin: 0;
     padding-bottom: 5px;
+    padding-top: 5px;
 }
 
 #symbol-edit {

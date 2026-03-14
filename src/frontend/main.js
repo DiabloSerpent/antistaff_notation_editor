@@ -1,6 +1,8 @@
 (async () => {
     const baseApiUrl = "http://127.0.0.1:8000";
 
+    const imageAspectRatio = 34 / 44;
+
     let asDiv = document.getElementById("container");
 
     let currentSheet = null;
@@ -50,15 +52,15 @@
     }
 
     function displayAntistaffCanvas() {
-        pageHeight = asDiv.offsetHeight;
+        pageHeight = Math.floor(asDiv.offsetHeight * 0.99);
         pageWidth  = Math.floor(pageHeight * pageSquares[0] / pageSquares[1]);
         squareSize = pageWidth / pageSquares[0];
 
         asDiv.innerHTML = `
-            <canvas id="as-grid" width="${pageWidth}" height="${pageHeight}"></canvas>
+            <canvas id="main-display" width="${pageWidth}" height="${pageHeight}"></canvas>
         `;
 
-        let asCanvas = document.getElementById("as-grid");
+        let asCanvas = document.getElementById("main-display");
         let ctx = asCanvas.getContext("2d");
         CTX = ctx;
 
@@ -188,8 +190,10 @@
     }
 
     function displayAntistaffExample() {
+        pageWidth = pageHeight * imageAspectRatio;
+
         asDiv.innerHTML = `
-            <img src="examples/witch_in_gold_antistaff.jpg" width="${pageWidth}" height="${pageHeight}"
+            <img id="main-display" src="examples/witch_in_gold_antistaff.jpg" width="${pageWidth}" height="${pageHeight}"
             alt="IRL Witch in Gold Antistaff Version">
         `;
         CTX = null;
@@ -198,8 +202,10 @@
     document.getElementById("antistaff-example").addEventListener("click", displayAntistaffExample);
 
     function displaySheetExample() {
+        pageWidth = pageHeight * imageAspectRatio;
+
         asDiv.innerHTML = `
-            <img src="examples/witch_in_gold_sheet.jpg" width="${pageWidth}" height="${pageHeight}"
+            <img id="main-display" src="examples/witch_in_gold_sheet.jpg" width="${pageWidth}" height="${pageHeight}"
             alt="IRL Witch in Gold Sheet Version">
         `;
         CTX = null;
