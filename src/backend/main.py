@@ -53,10 +53,10 @@ async def newSheet(width: int, height: int, response: Response) -> None:
     response.status_code = status.HTTP_201_CREATED
     sheets.append(DemoAntistaffSheet(width, height))
 
-@sheets_router.delete("/{sheet_id}/{cell_id}")
-async def deleteSheet(sheet_id: int) -> None:
-    sheets[sheet_id].contents[cell_id] = DemoBlank()
-    return None
+# @sheets_router.delete("/{sheet_id}/{cell_id}")
+# async def deleteSheet(sheet_id: int) -> None:
+#     sheets[sheet_id].contents[cell_id] = DemoBlank()
+#     return None
 
 @sheets_router.put("/{sheet_id}/{cell_id}")
 async def setSheetCell(sheet_id: int, cell_id: int, new_cell_raw: dict) -> None:
