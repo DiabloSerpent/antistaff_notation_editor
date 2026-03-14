@@ -1,3 +1,6 @@
+# Examples
+![](website.png)
+
 # Installation
 ```bash
 ./venv/Scripts/activate
