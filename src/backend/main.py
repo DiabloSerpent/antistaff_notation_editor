@@ -31,7 +31,7 @@ async def home() -> FileResponse:
 
 @app.get("/favicon.ico")
 async def getIcon() -> FileResponse:
-    return FileResponse("AntistaffEditorIcon.ico")
+    return FileResponse("images/AntistaffEditorIcon.ico")
 
 examples_router = APIRouter(prefix="/examples", tags=["Examples"])
 
@@ -39,7 +39,7 @@ examples_router = APIRouter(prefix="/examples", tags=["Examples"])
 @examples_router.get("/{file_name}")
 async def getExampleImage(file_name: str) -> FileResponse:
     # Could do a small validation check to ensure the thing being requested is just a file and not a path
-    return FileResponse(f"./examples/{file_name}")
+    return FileResponse(f"./images/sheet_music/{file_name}")
 
 
 sheets_router = APIRouter(prefix="/sheets", tags=["Sheet"])

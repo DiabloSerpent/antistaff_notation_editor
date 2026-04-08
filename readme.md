@@ -1,13 +1,21 @@
-# Examples
-![](website.png)
+# Example
+![](images/website.png)
 
-# Installation
+# Installation (Windows)
+Open terminal in the desired folder for the program to be put in and run:
+```
+git clone https://github.com/DiabloSerpent/antistaff_notation_editor.git
+```
+Navigate into folder from terminal and run:
+```
+.\venv\Scripts\activate
+```
 ```bash
-./venv/Scripts/activate
 pip install -r requirements.txt
 ```
 
-# Running From Terminal
+# Run program from Terminal
+(while venv is active)
 ```bash
 uvicorn src.backend.main:app
 ```
