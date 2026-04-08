@@ -1,5 +1,5 @@
 # Immediate
-- [ ] add the ability to delete sheets
+
 # Communication
 - [ ] make page or section in readme dedicated to explaining why the editor exists and what the antistaff format is trying to do
 - [ ] add panel to display the controls of the website

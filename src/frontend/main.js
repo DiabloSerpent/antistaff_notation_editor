@@ -30,8 +30,8 @@
             displayNewSheetTab(i);
         }
     }
-    async function setSheet(id) {
-        if (id === currentSheet) {
+    async function setSheet(id, forceFetch = false) {
+        if (!forceFetch && id === currentSheet) {
             return;
         }
 
@@ -64,8 +64,7 @@
     }
 
     function displayAntistaffCanvas() {
-        pageHeight = Math.floor(asDiv.offsetHeight * 0.99);
-        pageWidth  = Math.floor(pageHeight * pageSquares[0] / pageSquares[1]);
+        setDisplaySize(pageSquares[0] / pageSquares[1]);
         squareSize = pageWidth / pageSquares[0];
 
         asDiv.innerHTML = `
@@ -80,6 +79,11 @@
         drawAntistaffCanvas(ctx);
     }
     document.getElementById("antistaff-editor").addEventListener("click", displayAntistaffCanvas);
+
+    function setDisplaySize(aspect_ratio) {
+        pageHeight = Math.floor(asDiv.offsetHeight * 0.99);
+        pageWidth  = Math.floor(pageHeight * aspect_ratio);
+    }
 
     function onCanvasClick(e) {
         if (CTX === null) {
@@ -202,7 +206,7 @@
     }
 
     function displayAntistaffExample() {
-        pageWidth = pageHeight * imageAspectRatio;
+        setDisplaySize(imageAspectRatio);
 
         asDiv.innerHTML = `
             <img id="main-display" src="examples/witch_in_gold_antistaff.jpg" width="${pageWidth}" height="${pageHeight}"
@@ -214,7 +218,7 @@
     document.getElementById("antistaff-example").addEventListener("click", displayAntistaffExample);
 
     function displaySheetExample() {
-        pageWidth = pageHeight * imageAspectRatio;
+        setDisplaySize(imageAspectRatio);
 
         asDiv.innerHTML = `
             <img id="main-display" src="examples/witch_in_gold_sheet.jpg" width="${pageWidth}" height="${pageHeight}"
@@ -335,7 +339,7 @@
         let tabBar = document.getElementById("sheet-tab-buttons");
 
         let btn = document.createElement("button");
-        btn.id = `page-${id}`;
+        btn.id = getTabButtonId(id);
         btn.classList.add("tab-button");
         btn.innerText = `Page ${id+1}`;
         btn.addEventListener("click", onSheetTabButtonClick);
@@ -343,8 +347,12 @@
         tabBar.append(btn);
     }
 
+    function getTabButtonId(id) {
+        return `page-${id}`;
+    }
+
     function onSheetTabButtonClick(e) {
-        // Could maybe make it so that events that have a higher click tally than 1 aren't considered.
+        // Could make it so that events that have a higher click tally than 1 aren't considered.
         // Not necessary tho.
         setSheet(parseInt(e.srcElement.id.substring(5)));
     }
@@ -358,19 +366,33 @@
 
         fetch(`${baseApiUrl}/sheets/?width=${new_width}&height=${new_height}`, {
             method: "POST",
+        }).then(r => {
+            if (r.status !== 201) {
+                return;
+            }
+            displayNewSheetTab(totalSheets);
+            setSheet(totalSheets);
+            totalSheets += 1;
         });
 
         new_width_el.value  = "";
         new_height_el.value = "";
-
-        displayNewSheetTab(totalSheets);
-        setSheet(totalSheets);
-        totalSheets += 1;
     });
 
     document.getElementById("delete-sheet").addEventListener("click", e => {
-        // fetch(`${baseApiUrl}/sheets/${currentSheet}`, {
-        //     method: "DELETE",
-        // });
+        if (totalSheets === 1) {
+            return;
+        }
+
+        fetch(`${baseApiUrl}/sheets/${currentSheet}`, {
+            method: "DELETE",
+        }).then(_ => {
+            let last_btn = document.getElementById(getTabButtonId(totalSheets-1));
+            last_btn.remove();
+            totalSheets -= 1;
+            let next_sheet = currentSheet > totalSheets-1 ? totalSheets-1 : currentSheet;
+            console.log(totalSheets, currentSheet, next_sheet);
+            setSheet(next_sheet, true);
+        });
     });
 })();

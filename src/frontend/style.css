@@ -40,9 +40,9 @@ body {
     /* margin-left: 1px; */
 }
 
-#add-sheet {
-    /* margin-left: 1px; */
-}
+/* #add-sheet {
+    margin-left: 1px;
+} */
 
 .spacer {
     flex-grow: 1;

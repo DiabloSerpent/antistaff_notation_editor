@@ -50,13 +50,16 @@ async def getSheetAmount() -> int:
 
 @sheets_router.post("/", status_code=200)
 async def newSheet(width: int, height: int, response: Response) -> None:
-    response.status_code = status.HTTP_201_CREATED
-    sheets.append(DemoAntistaffSheet(width, height))
+    if width > 0 and height > 0:
+        response.status_code = status.HTTP_201_CREATED
+        sheets.append(DemoAntistaffSheet(width, height))
+    else:
+        response.status_code = status.HTTP_422_UNPROCESSABLE_CONTENT
 
-# @sheets_router.delete("/{sheet_id}/{cell_id}")
-# async def deleteSheet(sheet_id: int) -> None:
-#     sheets[sheet_id].contents[cell_id] = DemoBlank()
-#     return None
+@sheets_router.delete("/{sheet_id}")
+async def deleteSheet(sheet_id: int) -> None:
+    del sheets[sheet_id]
+    return None
 
 @sheets_router.put("/{sheet_id}/{cell_id}")
 async def setSheetCell(sheet_id: int, cell_id: int, new_cell_raw: dict) -> None:
