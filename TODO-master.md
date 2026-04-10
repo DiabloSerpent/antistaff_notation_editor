@@ -31,6 +31,7 @@
 - [ ] look into making a desktop app out of this
 	- Dioxus looks like the most interesting way to do this
 	- however, that would require rewriting the entire code base in Rust
+- [ ] Figure out what license to use
 - [ ] allow .mscz files to be imported into the editor
 	- but I don't plan on every feature being ported over b/c of the differences in formats and capabilities
 	- [ ] and also import/export the internal json files
